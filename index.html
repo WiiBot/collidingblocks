@@ -1,0 +1,155 @@
+<style>
+    .canvas {
+        border-width: 1px;
+        border-color: gray;
+        border-style: solid;
+        
+        display: block;
+        margin: auto;
+
+        background-color: white;
+    }
+    .container {
+        position: relative;
+        margin: auto;
+
+        width: 500px;
+        margin-top: 20%;
+    }
+    .field-container {
+        margin-top: 3;
+    }
+    .field {
+        width: 120;
+        margin:8;
+    }
+</style>
+<div class="container">
+ 
+<canvas class="canvas" width="500" height="400"></canvas>
+
+<div class="field-container">
+    Mass: <input id="mass" class="field" type="number" value="100">
+    Iterations: <input id="iterations" class="field" type="number" value="50000">
+    <button onclick="reset()">Reset</button>
+</div>
+
+</div>
+
+<script>
+
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+
+    var m1 = 100;
+    var x1 = 18
+    var v1 = 1;
+    var s1 = 5
+
+    // var m1 = 10;
+    // var x1 = 18
+    // var v1 = 1;
+    // var s1 = 5
+
+    var m2 = 1;
+    var x2 = 8
+    var v2 = 0;
+    var s2 = 3
+
+    // var m2 = 1;
+    // var x2 = 8
+    // var v2 = 0;
+    // var s2 = 3
+
+    var scale = 10;
+
+    var w = 8
+
+    var iterations = 50000
+
+    var counter = 0;
+
+function reset() {
+    x1 = 18
+    v1 = 1;
+    x2 = 8
+    v2 = 0;
+
+    counter = 0;
+}
+
+function loop() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    m1 = parseInt(document.getElementById("mass").value);
+    iterations = parseInt(document.getElementById("iterations").value);
+
+    for (let i = 0; i < iterations; i++) {
+        var lv1 = v1;
+        var lv2 = v2;
+
+        if (x2 <= 0) { //wall
+            v2 = -v2;
+        }
+        if (x2+s2 >= x1) { //block
+
+            v1 = (((m1 - m2)/(m1 + m2)) * lv1) + (((2 * m2)/(m1 + m2)) * lv2)
+            v2 = (((2 * m1)/(m1 + m2)) * lv1) + ((m2 - m1) / (m1 + m2) * lv2)
+            // if (Math.abs(v1) > Math.abs(v2)) {
+            //     p1 = m1 * v1;
+            //     p2 = m2 * v2;
+
+            //     v1 -= m2/m1
+            //     v2 += lv1*(m1-m2)
+            // }
+            // else {
+
+            // }
+
+            //v1 = lv1 + lv2 - m2/m1
+            //v2 = lv2 + lv1
+        }
+
+        if (lv1 != v1 || lv2 != v2)
+        {
+            counter += 1;
+        }
+
+        
+        x1 -= (v1/ iterations) / scale;
+        x2 -= (v2/ iterations) / scale;
+    }
+
+
+    
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'black';
+    ctx.rect(0, 100, w*scale, 200);
+    ctx.rect(0, 300, 500, 90);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.lineWidth = "2";
+    ctx.strokeStyle = 'blue';
+    ctx.rect(80 + x1*scale, 250, s1*scale, s1*scale);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.lineWidth = "2";
+    ctx.strokeStyle = 'red';
+    ctx.rect(80 + x2*scale, 270, s2*scale, s2*scale);
+    ctx.stroke();
+
+    ctx.font = "20px Arial";
+    //ctx.fillText(v1,94+x1*scale,284);
+    //ctx.fillText(v2,84+x2*scale,294);
+    ctx.fillText(counter,35,80);
+
+    // 
+    requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+</script>
