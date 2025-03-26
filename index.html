@@ -23,6 +23,14 @@
         width: 120;
         margin:8;
     }
+    .source {
+        color: black;
+        text-decoration: none;
+        
+    }
+    .source:hover {
+        color: lightcoral;
+    }
 </style>
 <div class="container">
  
@@ -32,6 +40,8 @@
     Mass: <input id="mass" class="field" type="number" value="100">
     Iterations: <input id="iterations" class="field" type="number" value="50000">
     <button onclick="reset()">Reset</button>
+    
+<a class="source" href="https://github.com/WiiBot/collidingblocks">Source</a>
 </div>
 
 </div>
@@ -80,6 +90,8 @@ function reset() {
 
 function loop() {
 
+    //ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     m1 = parseInt(document.getElementById("mass").value);
